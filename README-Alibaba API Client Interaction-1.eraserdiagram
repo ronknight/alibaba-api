@@ -1,0 +1,55 @@
+sequence-diagram
+
+// Sequence Diagram for Alibaba API Client
+
+title Alibaba API Client Interaction
+
+// Actors
+User [icon: user, color: blue]
+Client [icon: monitor, color: green]
+EnvFile [icon: file, color: orange]
+TaobaoAPI [icon: cloud, color: red]
+
+// User initiates the script
+User > Client: Run script (main.py)
+activate Client
+
+// Load environment variables
+Client > EnvFile: Load .env file
+EnvFile --> Client: Return API credentials
+
+// Construct URL and payload
+Client > Client: Construct URL and payload
+
+// Create string to sign
+Client > Client: Create string to sign
+
+// Hash the string using MD5
+Client > Client: Hash string using MD5
+
+// Generate signature
+Client > Client: Generate signature
+
+// Add signature to payload
+Client > Client: Add signature to payload
+
+// Make POST request to Taobao API
+Client > TaobaoAPI: POST request with payload
+activate TaobaoAPI
+
+// Loop until a valid response is received
+loop [label: until valid response, color: lightblue] {
+    TaobaoAPI > Client: API response
+    alt [label: valid response, color: green] {
+        Client > User: Print response to console
+    }
+    else [label: invalid response, color: red] {
+        Client > Client: Modify request parameters
+        Client > TaobaoAPI: Retry POST request
+    }
+}
+deactivate TaobaoAPI
+
+// End of script
+deactivate Client
+
