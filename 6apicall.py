@@ -46,7 +46,7 @@ params = {
     'v': api_version,
     'sign_method': 'md5',
     'fields': 'num_iid,title,nick,price,num',
-    'num_iid': product_id
+    'id': product_id
 }
 
 # Generate the signature
