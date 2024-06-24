@@ -1,7 +1,7 @@
 from urllib.parse import urlparse, parse_qs
 
 # Given URL
-url = "https://cbk.4sgm.us/?code=1_mf5Xxw7UFpoquSWMxmeg3p22730&state=1212"
+url = "https://cbk.4sgm.us/?code=1_J3LNDUnqkQeDmjr6JY35XRQ41070&state=1212"
 
 # Parse the URL to extract the query parameters
 parsed_url = urlparse(url)
