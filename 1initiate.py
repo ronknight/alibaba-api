@@ -104,29 +104,3 @@ params = {
 # Generate sign
 sign = generate_sign(params, app_secret)
 params['sign'] = sign
-
-# Construct the exact URL with encoded parameters
-encoded_params = urllib.parse.urlencode(params)
-exact_url_format = f"https://gw.api.taobao.com/router/rest?{encoded_params}"
-
-print(f"Making API call to: {exact_url_format}")
-
-# Make API call with retry logic
-max_retries = 5
-for attempt in range(max_retries):
-    try:
-        response = requests.get(exact_url_format, timeout=10)  # Set timeout to 10 seconds
-        response.raise_for_status()  # Raise exception for bad response status
-        data = response.json()  # Parse JSON response
-        print("API Response:", data)
-        break  # Exit loop on successful response
-    except requests.exceptions.Timeout:
-        print(f"The request timed out. Attempt {attempt + 1} of {max_retries}")
-        if attempt < max_retries - 1:
-            time.sleep(2 ** attempt)  # Exponential backoff
-    except requests.exceptions.RequestException as e:
-        print("API call failed:", e)
-        break  # Exit loop on non-timeout request failure
-    except Exception as e:
-        print("An unexpected error occurred:", e)
-        break  # Exit loop on unexpected error
