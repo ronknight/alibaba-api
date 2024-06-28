@@ -1,4 +1,5 @@
 import os
+import sys
 import requests
 import hashlib
 import time
@@ -13,11 +14,17 @@ app_key = os.getenv('APP_KEY')
 app_secret = os.getenv('APP_SECRET')
 session_key = os.getenv('SESSION_KEY')
 
-ALIBABA_SERVER_CALL_ENTRY = "https://eco.taobao.com/router/rest"
+# Define the log directory
 LOG_DIR = 'api_logs/'  # Directory to store log files
+os.makedirs(LOG_DIR, exist_ok=True)  # Create directory if it doesn't exist
 
-# Create directory if it does not exist
-os.makedirs(LOG_DIR, exist_ok=True)
+# Command-line arguments
+if len(sys.argv) != 2:
+    print("Usage: script.py <page_size>")
+    print("page_size is the number of items per page to fetch (e.g., 500)")
+    sys.exit(1)
+
+page_size = sys.argv[1]
 
 # API endpoint and parameters
 url = 'https://eco.taobao.com/router/rest'
@@ -31,8 +38,7 @@ params = {
     'timestamp': time.strftime("%Y-%m-%d %H:%M:%S"),
     'v': '2.0',
     'current_page': '1',
-    'page_size': '500',
-    'subject': '',
+    'page_size': page_size,
     'language': 'ENGLISH',
 }
 
@@ -46,99 +52,63 @@ def calculate_sign(params, secret):
 params['sign'] = calculate_sign(params, app_secret)
 
 try:
-    # Log the request details with timestamp
+    # Log the request details
     request_time = time.strftime("%Y-%m-%d %H:%M:%S")
-    request_log_photobanklist = f"Request Time: {request_time}\n"
-    request_log_photobanklist += f"Request URL: {url}\n"
-    request_log_photobanklist += f"Request Method: POST\n"
-    request_log_photobanklist += "Request Headers:\n"
-    for key, value in params.items():
-        request_log_photobanklist += f"{key}: {value}\n"
-    request_log_photobanklist += "Request Body:\n"
-    request_log_photobanklist += json.dumps(params) + "\n\n"
+    with open(os.path.join(LOG_DIR, 'photobanklist_request_log.txt'), 'a') as f:
+        f.write(f"Request Time: {request_time}\n")
+        f.write(f"Request URL: {url}\n")
+        f.write(f"Request Method: POST\n")
+        f.write("Request Headers:\n")
+        for key, value in params.items():
+            f.write(f"{key}: {value}\n")
+        f.write("Request Body:\n")
+        f.write(json.dumps(params) + "\n\n")
 
     # Make POST request
     response = requests.post(url, data=params)
 
-    # Log the request details
-    with open('request_log_photobanklist.txt', 'a') as f:
-        f.write(request_log_photobanklist)
-
-    # Log the response details with timestamp
-    response_time = time.strftime("%Y-%m-%d %H:%M:%S")
-    response_log = f"Response Time: {response_time}\n"
-    response_log += f"Response Status Code: {response.status_code}\n"
-    response_log += "Response Headers:\n"
-    for key, value in response.headers.items():
-        response_log += f"{key}: {value}\n"
-    response_log += "Response Body:\n"
-    response_log += response.text + "\n\n"
-
     # Log the response details
-    with open('response_log.txt', 'a') as f:
-        f.write(response_log)
+    response_time = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open(os.path.join(LOG_DIR, 'photobanklist_response_log.txt'), 'a') as f:
+        f.write(f"Response Time: {response_time}\n")
+        f.write(f"Response Status Code: {response.status_code}\n")
+        f.write("Response Headers:\n")
+        for key, value in response.headers.items():
+            f.write(f"{key}: {value}\n")
+        f.write("Response Body:\n")
+        f.write(response.text + "\n\n")
 
-    # Check response status code
+    # Check response status code and save response to JSON file if successful
     if response.status_code == 200:
         try:
-            # Parse JSON response
             data = response.json()
+            response_json_filename = f'photobanklist_response_{response_time.replace(":", "").replace(" ", "_")}.json'
+            response_json_path = os.path.join(LOG_DIR, response_json_filename)
+            with open(response_json_path, 'w') as json_file:
+                json.dump(data, json_file, indent=4)
 
-            # Check if error response
-            if 'error_response' in data:
-                error = data['error_response']
-                code = error.get('code', '')
-                msg = error.get('msg', '')
-                sub_msg = error.get('sub_msg', '')
-                print(f"API Error: {msg}. {sub_msg}")
-
-                # Log error details
-                error_log_photobanklist = f"Error Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                error_log_photobanklist += f"Error Code: {code}\n"
-                error_log_photobanklist += f"Error Message: {msg}\n"
-                error_log_photobanklist += f"Error Sub Message: {sub_msg}\n"
-                with open('error_log_photobanklist.txt', 'a') as f:
-                    f.write(error_log_photobanklist)
-            else:
-                # Save response body to JSON file
-                response_json_filename = f'response_photobanklist_{response_time.replace(":", "").replace(" ", "_")}.json'
-                with open(response_json_filename, 'w') as json_file:
-                    json.dump(data, json_file, indent=4)
-
-                # Check if expected response structure is present
-                if 'alibaba_icbu_product_list_response' in data:
-                    product_list_response = data['alibaba_icbu_product_list_response']
-                    products = product_list_response.get('products', {}).get('alibaba_product_brief_response', [])
-                    if isinstance(products, list):
-                        for product in products:
-                            if isinstance(product, dict):
-                                subject = product.get('subject', '')
-                                print(f"Product Subject: {subject}")
-                            else:
-                                print("Invalid product structure.")
-                    else:
-                        print("No products found in response.")
-                else:
-                    print("Unexpected JSON structure: alibaba_icbu_product_list_response not found.")
         except json.JSONDecodeError as je:
-            print(f"Failed to parse JSON response: {je}")
-            # Log JSON decoding error
-            error_log_photobanklist = f"JSON Decode Error Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-            error_log_photobanklist += f"Error Message: {str(je)}\n"
-            with open('error_log_photobanklist.txt', 'a') as f:
-                f.write(error_log_photobanklist)
+            error_msg = f"Failed to parse JSON response: {je}"
+            print(error_msg)
+            with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
+                f.write(f"{error_msg}\n")
+
     else:
-        print(f"Request failed with status code: {response.status_code}")
         # Log request failure
-        failure_log = f"Request Failure Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
+        failure_log = f"Request Failure Time: {response_time}\n"
         failure_log += f"Status Code: {response.status_code}\n"
-        with open('error_log_photobanklist.txt', 'a') as f:
+        with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
             f.write(failure_log)
+        print(f"Request failed with status code: {response.status_code}")
 
 except requests.exceptions.RequestException as e:
-    print(f"Request error: {e}")
-    # Log request exception
-    exception_log = f"Request Exception Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-    exception_log += f"Exception Message: {str(e)}\n"
-    with open('error_log_photobanklist.txt', 'a') as f:
-        f.write(exception_log)
+    request_error_msg = f"Request error: {e}"
+    print(request_error_msg)
+    with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
+        f.write(f"{request_error_msg}\n")
+
+except Exception as e:
+    general_error_msg = f"Error occurred: {e}"
+    print(general_error_msg)
+    with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
+        f.write(f"{general_error_msg}\n")
