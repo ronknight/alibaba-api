@@ -41,6 +41,14 @@ def calculate_sign(params, secret):
 # Add sign to parameters
 params['sign'] = calculate_sign(params, app_secret)
 
+# Remove sensitive information for logging
+def remove_sensitive_info(params):
+    safe_params = params.copy()
+    safe_params.pop('app_key', None)
+    safe_params.pop('session', None)
+    safe_params.pop('sign', None)
+    return safe_params
+
 # Log file names
 log_file = f"{LOG_DIR}getproductschema_logs_{time.strftime('%Y-%m-%d_%H-%M-%S')}.json"
 error_log_file = f"{LOG_DIR}getproductschema_error_{time.strftime('%Y-%m-%d_%H-%M-%S')}.json"
@@ -53,7 +61,7 @@ try:
     # Log API request
     with open(log_file, 'w') as f:
         json.dump({
-            'request_params': params,
+            'request_params': remove_sensitive_info(params),
             'response': getproductschema_response,
         }, f, indent=4)
 
@@ -61,7 +69,7 @@ try:
     if getproductschema_response.get('error_response'):
         with open(error_log_file, 'w') as f:
             json.dump({
-                'request_params': params,
+                'request_params': remove_sensitive_info(params),
                 'response': getproductschema_response,
             }, f, indent=4)
         print(f"Error: {getproductschema_response['error_response']['msg']}")
@@ -72,7 +80,7 @@ try:
 except requests.exceptions.RequestException as e:
     with open(error_log_file, 'w') as f:
         json.dump({
-            'request_params': params,
+            'request_params': remove_sensitive_info(params),
             'error_message': str(e),
         }, f, indent=4)
     print(f"Request failed: {e}")

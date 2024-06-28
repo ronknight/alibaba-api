@@ -50,42 +50,45 @@ def calculate_sign(params, secret):
 # Add sign to parameters
 params['sign'] = calculate_sign(params, app_secret)
 
+# Remove sensitive information for logging
+def remove_sensitive_info(params):
+    safe_params = params.copy()
+    safe_params.pop('app_key', None)
+    safe_params.pop('session', None)
+    safe_params.pop('sign', None)
+    return safe_params
+
 # Create logs directory if it doesn't exist
 log_dir = 'api_logs'
 os.makedirs(log_dir, exist_ok=True)
 
 try:
-    # Log the request details with timestamp
-    request_time = time.strftime("%Y-%m-%d %H:%M:%S")
-    productlist_request_log = f"Request Time: {request_time}\n"
-    productlist_request_log += f"Request URL: {url}\n"
-    productlist_request_log += f"Request Method: POST\n"
-    productlist_request_log += "Request Headers:\n"
-    for key, value in params.items():
-        productlist_request_log += f"{key}: {value}\n"
-    productlist_request_log += "Request Body:\n"
-    productlist_request_log += json.dumps(params) + "\n\n"
-
     # Make POST request
     response = requests.post(url, data=params)
 
-    # Log the request details
+    # Log the request details with timestamp (sensitive info removed)
+    request_time = time.strftime("%Y-%m-%d %H:%M:%S")
+    productlist_request_log = {
+        "Request Time": request_time,
+        "Request URL": url,
+        "Request Method": "POST",
+        "Request Headers": remove_sensitive_info(params)
+    }
+
     with open(os.path.join(log_dir, 'productlist_request_log.txt'), 'a') as f:
-        f.write(productlist_request_log)
+        f.write(json.dumps(productlist_request_log, indent=4) + "\n\n")
 
     # Log the response details with timestamp
     response_time = time.strftime("%Y-%m-%d %H:%M:%S")
-    productlist_response_log = f"Response Time: {response_time}\n"
-    productlist_response_log += f"Response Status Code: {response.status_code}\n"
-    productlist_response_log += "Response Headers:\n"
-    for key, value in response.headers.items():
-        productlist_response_log += f"{key}: {value}\n"
-    productlist_response_log += "Response Body:\n"
-    productlist_response_log += response.text + "\n\n"
+    productlist_response_log = {
+        "Response Time": response_time,
+        "Response Status Code": response.status_code,
+        "Response Headers": dict(response.headers),
+        "Response Body": response.text
+    }
 
-    # Log the response details
     with open(os.path.join(log_dir, 'productlist_response_log.txt'), 'a') as f:
-        f.write(productlist_response_log)
+        f.write(json.dumps(productlist_response_log, indent=4) + "\n\n")
 
     # Check response status code
     if response.status_code == 200:
@@ -102,12 +105,14 @@ try:
                 print(f"API Error: {msg}. {sub_msg}")
 
                 # Log error details
-                error_log = f"Error Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-                error_log += f"Error Code: {code}\n"
-                error_log += f"Error Message: {msg}\n"
-                error_log += f"Error Sub Message: {sub_msg}\n"
+                error_log = {
+                    "Error Time": time.strftime('%Y-%m-%d %H:%M:%S'),
+                    "Error Code": code,
+                    "Error Message": msg,
+                    "Error Sub Message": sub_msg
+                }
                 with open(os.path.join(log_dir, 'productlist_error_log.txt'), 'a') as f:
-                    f.write(error_log)
+                    f.write(json.dumps(error_log, indent=4) + "\n\n")
             else:
                 # Save response body to JSON file
                 response_json_filename = os.path.join(log_dir, f'productlist_response_{response_time.replace(":", "").replace(" ", "_")}.json')
@@ -132,22 +137,28 @@ try:
         except json.JSONDecodeError as je:
             print(f"Failed to parse JSON response: {je}")
             # Log JSON decoding error
-            error_log = f"JSON Decode Error Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-            error_log += f"Error Message: {str(je)}\n"
+            error_log = {
+                "JSON Decode Error Time": time.strftime('%Y-%m-%d %H:%M:%S'),
+                "Error Message": str(je)
+            }
             with open(os.path.join(log_dir, 'productlist_error_log.txt'), 'a') as f:
-                f.write(error_log)
+                f.write(json.dumps(error_log, indent=4) + "\n\n")
     else:
         print(f"Request failed with status code: {response.status_code}")
         # Log request failure
-        failure_log = f"Request Failure Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-        failure_log += f"Status Code: {response.status_code}\n"
+        failure_log = {
+            "Request Failure Time": time.strftime('%Y-%m-%d %H:%M:%S'),
+            "Status Code": response.status_code
+        }
         with open(os.path.join(log_dir, 'productlist_error_log.txt'), 'a') as f:
-            f.write(failure_log)
+            f.write(json.dumps(failure_log, indent=4) + "\n\n")
 
 except requests.exceptions.RequestException as e:
     print(f"Request error: {e}")
     # Log request exception
-    exception_log = f"Request Exception Time: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
-    exception_log += f"Exception Message: {str(e)}\n"
+    exception_log = {
+        "Request Exception Time": time.strftime('%Y-%m-%d %H:%M:%S'),
+        "Exception Message": str(e)
+    }
     with open(os.path.join(log_dir, 'productlist_error_log.txt'), 'a') as f:
-        f.write(exception_log)
+        f.write(json.dumps(exception_log, indent=4) + "\n\n")

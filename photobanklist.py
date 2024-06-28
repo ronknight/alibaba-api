@@ -51,32 +51,41 @@ def calculate_sign(params, secret):
 # Add sign to parameters
 params['sign'] = calculate_sign(params, app_secret)
 
+# Remove sensitive information for logging
+def remove_sensitive_info(params):
+    safe_params = params.copy()
+    safe_params.pop('app_key', None)
+    safe_params.pop('session', None)
+    safe_params.pop('sign', None)
+    return safe_params
+
 try:
-    # Log the request details
+    # Log the request details with sensitive info removed
     request_time = time.strftime("%Y-%m-%d %H:%M:%S")
+    request_log = {
+        "Request Time": request_time,
+        "Request URL": url,
+        "Request Method": "POST",
+        "Request Headers": remove_sensitive_info(params)
+    }
+
     with open(os.path.join(LOG_DIR, 'photobanklist_request_log.txt'), 'a') as f:
-        f.write(f"Request Time: {request_time}\n")
-        f.write(f"Request URL: {url}\n")
-        f.write(f"Request Method: POST\n")
-        f.write("Request Headers:\n")
-        for key, value in params.items():
-            f.write(f"{key}: {value}\n")
-        f.write("Request Body:\n")
-        f.write(json.dumps(params) + "\n\n")
+        f.write(json.dumps(request_log, indent=4) + "\n\n")
 
     # Make POST request
     response = requests.post(url, data=params)
 
     # Log the response details
     response_time = time.strftime("%Y-%m-%d %H:%M:%S")
+    response_log = {
+        "Response Time": response_time,
+        "Response Status Code": response.status_code,
+        "Response Headers": dict(response.headers),
+        "Response Body": response.text
+    }
+
     with open(os.path.join(LOG_DIR, 'photobanklist_response_log.txt'), 'a') as f:
-        f.write(f"Response Time: {response_time}\n")
-        f.write(f"Response Status Code: {response.status_code}\n")
-        f.write("Response Headers:\n")
-        for key, value in response.headers.items():
-            f.write(f"{key}: {value}\n")
-        f.write("Response Body:\n")
-        f.write(response.text + "\n\n")
+        f.write(json.dumps(response_log, indent=4) + "\n\n")
 
     # Check response status code and save response to JSON file if successful
     if response.status_code == 200:
@@ -91,24 +100,26 @@ try:
             error_msg = f"Failed to parse JSON response: {je}"
             print(error_msg)
             with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
-                f.write(f"{error_msg}\n")
+                f.write(json.dumps({"Error": error_msg}, indent=4) + "\n\n")
 
     else:
         # Log request failure
-        failure_log = f"Request Failure Time: {response_time}\n"
-        failure_log += f"Status Code: {response.status_code}\n"
+        failure_log = {
+            "Request Failure Time": response_time,
+            "Status Code": response.status_code
+        }
         with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
-            f.write(failure_log)
+            f.write(json.dumps(failure_log, indent=4) + "\n\n")
         print(f"Request failed with status code: {response.status_code}")
 
 except requests.exceptions.RequestException as e:
     request_error_msg = f"Request error: {e}"
     print(request_error_msg)
     with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
-        f.write(f"{request_error_msg}\n")
+        f.write(json.dumps({"Request Error": request_error_msg}, indent=4) + "\n\n")
 
 except Exception as e:
     general_error_msg = f"Error occurred: {e}"
     print(general_error_msg)
     with open(os.path.join(LOG_DIR, 'photobanklist_error_log.txt'), 'a') as f:
-        f.write(f"{general_error_msg}\n")
+        f.write(json.dumps({"Error": general_error_msg}, indent=4) + "\n\n")
