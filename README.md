@@ -154,6 +154,4 @@ Each script includes error handling and logging functionality. Logs are stored i
 
 Note: This project is for demonstration purposes only. You may need to modify the scripts based on your specific use case and the latest Alibaba/Taobao API documentation.
 
-```
 This comprehensive README now includes information about all the scripts in the project, providing a clear overview of each script's functionality and usage instructions. The structure remains consistent with the original README, while incorporating details about all the new scripts.
-```
