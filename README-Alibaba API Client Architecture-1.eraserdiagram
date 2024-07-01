@@ -1,0 +1,63 @@
+cloud-architecture-diagram
+
+// Title
+title Alibaba API Client Architecture
+
+// Nodes and Groups
+Python Project [icon: python]
+
+Requests Library [icon: python]
+Dotenv Library [icon: python]
+.env File [icon: file]
+
+Alibaba/Taobao API [icon: taobao]
+
+API Credentials [icon: key]
+OAuth 2.0 Flow [icon: lock]
+Access Tokens [icon: key]
+
+Product Information [icon: box]
+Product Group Information [icon: list]
+Category Information [icon: list]
+Shipping Line Template Information [icon: truck]
+Photobank Groups [icon: image]
+
+API Logs [icon: file-text]
+
+Scripts [icon: file-code] {
+  Product List Script [icon: file-code]
+  Product Get Script [icon: file-code]
+  Product Group Get Script [icon: file-code]
+  Product ID Decrypt Script [icon: file-code]
+  Product Schema Script [icon: file-code]
+  Product Update Field Script [icon: file-code]
+  Product Update Field Copy Script [icon: file-code]
+  Wholesale Shipping Line Template Script [icon: file-code]
+  Category Attribute Get Script [icon: file-code]
+  Category Get Script [icon: file-code]
+  Photobank Group List Script [icon: file-code]
+  Photobank Group Operate Script [icon: file-code]
+  Photobank List Script [icon: file-code]
+  Product Add Script [icon: file-code]
+  Product Batch Update Display Script [icon: file-code]
+}
+
+// Connections
+Python Project > Requests Library
+Python Project > Dotenv Library
+Python Project > .env File
+Python Project > Scripts
+
+Scripts > Alibaba/Taobao API
+Scripts > API Logs
+
+.env File > API Credentials
+API Credentials > OAuth 2.0 Flow
+OAuth 2.0 Flow > Access Tokens
+
+Scripts > Product Information
+Scripts > Product Group Information
+Scripts > Category Information
+Scripts > Shipping Line Template Information
+Scripts > Photobank Groups
+

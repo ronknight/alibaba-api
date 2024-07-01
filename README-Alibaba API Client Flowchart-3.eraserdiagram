@@ -1,0 +1,55 @@
+flowchart-diagram
+
+title Alibaba API Client Flowchart
+
+// Prerequisites
+Start [shape: oval, label: "Start Prerequisites"] > Check Python Installation [shape: rectangle, icon: terminal]
+Check Python Installation > Install Required Libraries [shape: rectangle, icon: package]
+Install Required Libraries > Create .env File [shape: rectangle, icon: file-text]
+Create .env File > End Prerequisites [shape: oval, label: "End Prerequisites"]
+
+// Usage
+Start Usage [shape: oval, label: "Start Usage"] > Clone Repository [shape: rectangle, icon: git-branch]
+Clone Repository > Navigate to Directory [shape: rectangle, icon: folder]
+Navigate to Directory > Set Up .env File [shape: rectangle, icon: file-text]
+Set Up .env File > Run Scripts [shape: rectangle, icon: terminal]
+Run Scripts > End Usage [shape: oval, label: "End Usage"]
+
+// Features
+Features [shape: rectangle, icon: star] {
+  Authentication [icon: lock]
+  Token Management [icon: key]
+  Product Management [icon: box]
+  Group Management [icon: layers]
+  Category Management [icon: list]
+  Shipping Management [icon: truck]
+  Photobank Management [icon: image]
+  Logging [icon: file-text]
+  Error Handling [icon: alert-triangle]
+}
+
+// Scripts
+Scripts [shape: rectangle, icon: code] {
+  Product List [label: "productlist.py", icon: list]
+  Product Get [label: "productget.py", icon: info]
+  Product Group Get [label: "productgroupget.py", icon: layers]
+  Product ID Decrypt [label: "productiddecrypt.py", icon: key]
+  Product Schema [label: "productschema.py", icon: file-text]
+  Product Update Field [label: "productupdatefield.py", icon: edit]
+  Product Update Field Copy [label: "productupdatefieldcopy.py", icon: copy]
+  Wholesale Shipping Line Template [label: "wholesaleshippinglinetemplate.py", icon: truck]
+  Category Attribute Get [label: "categoryattributeget.py", icon: list]
+  Category Get [label: "categoryget.py", icon: list]
+  Photobank Group List [label: "photobankgrouplist.py", icon: image]
+  Photobank Group Operate [label: "photobankgroupoperate.py", icon: settings]
+  Photobank List [label: "photobanklist.py", icon: image]
+  Product Add [label: "productadd.py", icon: plus]
+  Product Batch Update Display [label: "productbatchupdatedisplay.py", icon: edit]
+}
+
+// Connections
+Start Prerequisites > Start Usage
+End Prerequisites > Features
+End Usage > Features
+Features > Scripts
+

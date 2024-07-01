@@ -1,0 +1,44 @@
+sequence-diagram
+
+title Alibaba API Client Interaction
+
+// Actors
+Client [icon: monitor, color: lightblue]
+API [icon: cloud, color: blue]
+AuthServer [icon: lock, color: green]
+Database [icon: database, color: orange]
+
+// Sequence of interactions
+Client > API: Request product list
+activate Client
+API > AuthServer: Authenticate request
+activate API
+AuthServer > API: Authentication success
+deactivate AuthServer
+
+alt [label: valid session, color: green] {
+  API > Database: Retrieve product list
+  Database > API: Product list data
+  API > Client: Return product list
+}
+else [label: invalid session, color: red] {
+  API > Client: Request authentication
+  Client > AuthServer: Provide credentials
+  AuthServer > Client: Authentication token
+  Client > API: Resend request with token
+  API > Database: Retrieve product list
+  Database > API: Product list data
+  API > Client: Return product list
+}
+deactivate API
+deactivate Client
+
+// Error handling
+opt [label: error handling, color: yellow] {
+  API > Client: Error message
+  Client > API: Retry request
+  API > Database: Retrieve product list
+  Database > API: Product list data
+  API > Client: Return product list
+}
+
