@@ -49,6 +49,9 @@ cd alibaba-api
 7. **Photobank Management**: Lists, operates, and manages photobank groups.
 8. **Logging**: Comprehensive logging of API requests and responses.
 9. **Error Handling**: Robust error handling and reporting.
+10. **Product Schema**: Management: Adds, retrieves, and renders product schemas.
+
+
 ## Scripts
 ### 1. Product List (productlist.py)
 Retrieves a list of products based on search criteria.
@@ -140,6 +143,55 @@ Updates the display status for multiple products at once.
 ```bash
 python productbatchupdatedisplay.py <new_display> <product_id_list>
 ```
+### 16. Product Schema Add Draft (productschemaadddraft.py)
+Adds a draft product schema.
+
+```bash
+python productschemaadddraft.py <cat_id>
+```
+
+### 17. Product Schema Get (productschemaget.py)
+Retrieves a product schema.
+
+```bash
+python productschemaget.py <product_id>
+```
+
+### 18. Product Schema Render (productschemarender.py)
+Renders a product schema.
+
+```bash
+python productschemarender.py <cat_id> <product_id>
+```
+
+### 19. Product Schema Render Draft (productschemarenderdraft.py)
+Renders a draft product schema.
+
+```bash
+python productschemarenderdraft.py <cat_id> <draft_product_id>
+```
+
+### 20. Product Schema Add (productschemaadd.py)
+Adds a product schema.
+
+```bash
+python productschemaadd.py <cat_id>
+```
+
+### 21. Product Scheme Update (productschemaupdate.py)
+Updates a products schema.
+
+```bash
+python productschemaupdate.py <cat_id> 
+```
+
+### 22. Product Score Get (productscoreget.py)
+Get a products  score.
+
+```bash
+python productschemaupdate.py <cat_id> 
+```
+
 Each script includes error handling and logging functionality. Logs are stored in the `api_logs/` directory.
 
 <!-- eraser-additional-content -->
