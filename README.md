@@ -124,18 +124,6 @@ python productbatchupdatedisplay.py <new_display> <product_id_list>
 ```
 Each script includes error handling and logging functionality. Logs are stored in the `api_logs/` directory.
 
-## Diagrams
-## ![Alibaba API Client Interaction Diagram](/.eraser/Myn74V7c2RK4JrPk9V2j___3Jivg2tjMecMlrHwbIVIBR8f7U03___---diagram----dd95c05bc6f05a6355ed26be6e907103-Alibaba-API-Client-Interaction.png "")
-
-
-Note: This project is for demonstration purposes only. You may need to modify the scripts based on your specific use case and the latest Alibaba/Taobao API documentation.
-
-```
-This comprehensive README now includes information about all the scripts in the project, providing a clear overview of each script's functionality and usage instructions. The structure remains consistent with the original README, while incorporating details about all the new scripts.
-```
-
-
-
 <!-- eraser-additional-content -->
 ## Diagrams
 <!-- eraser-additional-files -->
@@ -145,3 +133,11 @@ This comprehensive README now includes information about all the scripts in the 
 <!-- end-eraser-additional-files -->
 <!-- end-eraser-additional-content -->
 <!--- Eraser file: https://app.eraser.io/workspace/Myn74V7c2RK4JrPk9V2j --->
+
+
+Note: This project is for demonstration purposes only. You may need to modify the scripts based on your specific use case and the latest Alibaba/Taobao API documentation.
+
+```
+This comprehensive README now includes information about all the scripts in the project, providing a clear overview of each script's functionality and usage instructions. The structure remains consistent with the original README, while incorporating details about all the new scripts.
+```
+
