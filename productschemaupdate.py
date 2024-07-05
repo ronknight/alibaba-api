@@ -32,19 +32,10 @@ product_id = sys.argv[2]  # Get product_id from command-line argument
 # Construct XML data for the product schema
 xml_data = """
 <itemSchema>
-    <field id="productTitle" name="Product name" type="input">
-        <value>wang chen test api submit sourcing updateFields 333</value>
-    </field>
     <field id="paymentMethod" name="Payment Options\n" type="complex">
         <complex-value>
-            <field id="predefined_method" type="multiCheck">
-                <values>
-                    <value>L/C</value>
-                    <value>D/A</value>
-                </values>
-            </field>
             <field id="self_defined_0" type="input">
-                <value>dddd</value>
+                <value>Bank Transfers</value>
             </field>
         </complex-value>
     </field>
