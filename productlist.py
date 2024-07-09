@@ -15,14 +15,15 @@ app_secret = os.getenv('APP_SECRET')
 session_key = os.getenv('SESSION_KEY')
 
 # Command-line arguments
-if len(sys.argv) != 3:
-    print("Usage: script.py <subject> <page_size>")
+if len(sys.argv) != 4 or sys.argv[2] not in ['10', '20', '30']:
+    print("Usage: script.py <subject> <page_size> <page_number>")
     print("Subject is the product title to be looked up.")
-    print('To set subject to blank run command (python productlist.py "" 200)')
+    print("Page size options: 10, 20, 30")
     sys.exit(1)
 
 subject = sys.argv[1]
 page_size = sys.argv[2]
+page_number = sys.argv[3]
 
 # API endpoint and parameters
 url = 'https://eco.taobao.com/router/rest'
@@ -35,7 +36,7 @@ params = {
     'sign_method': 'md5',
     'timestamp': time.strftime("%Y-%m-%d %H:%M:%S"),
     'v': '2.0',
-    'current_page': '1',
+    'current_page': page_number,
     'page_size': page_size,
     'subject': subject,
     'language': 'ENGLISH',
