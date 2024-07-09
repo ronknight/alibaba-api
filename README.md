@@ -34,11 +34,13 @@ APP_SECRET=your_app_secret
 REDIRECT_URI=your_redirect_uri
 SESSION_KEY=your_session_key
 AUTH_CODE=your_auth_code
+
 ## Usage
 1. Clone the repository:git clone https://github.com/ronknight/alibaba-api.git
 cd alibaba-api
 2. Set up your `.env`  file with the required credentials.
 3. Run the scripts as needed (see the Scripts section for details on each script).
+
 ## Features
 1. **Authentication**: Handles the OAuth 2.0 flow for Alibaba/Taobao API.
 2. **Token Management**: Creates and manages access tokens.
@@ -51,13 +53,11 @@ cd alibaba-api
 9. **Error Handling**: Robust error handling and reporting.
 10. **Product Schema**: Management: Adds, retrieves, and renders product schemas.
 
-
-## Scripts
 ### 1. Product List (productlist.py)
-Retrieves a list of products based on search criteria.
+Retrieves a list of products based on search criteria. Takes command-line arguments for subject, page size, and page number. Makes a POST request to the Alibaba API to retrieve product information. Logs request and response details. Handles and logs errors. Prints product subjects from the response.
 
 ```bash
-python productlist.py <subject> <page_size>
+python productlist.py <subject> <page_size> <page_number>
 ```
 ### 2. Product Get (productget.py)
 Retrieves detailed information about a specific product.
