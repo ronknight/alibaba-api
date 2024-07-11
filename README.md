@@ -1,6 +1,6 @@
 <p><a target="_blank" href="https://app.eraser.io/workspace/Myn74V7c2RK4JrPk9V2j" id="edit-in-eraser-github-link"><img alt="Edit in Eraser" src="https://firebasestorage.googleapis.com/v0/b/second-petal-295822.appspot.com/o/images%2Fgithub%2FOpen%20in%20Eraser.svg?alt=media&amp;token=968381c8-a7e7-472a-8ed6-4a6626da5501"></a></p>
 
-<h1 align="center"><a href="https://github.com/ronknight/alibaba-api">Alibaba API Client</a></h1>
+<h1 align="center"><a href="https://github.com/ronknight/alibaba-api">🌐 Alibaba API Client</a></h1>
 <h4 align="center">This Python project demonstrates how to interact with the Alibaba/Taobao API to retrieve product information and manage authentication. It uses the `requests` library to make HTTP requests and the `dotenv` library to load environment variables from a `.env` file.</h4>
 
 <p align="center">
@@ -24,24 +24,33 @@
 
 ---
 
-## Prerequisites
+## 📋 Prerequisites
 Before running the scripts, make sure you have the following:
 
 1. Python installed on your system.
-2. Required libraries installed. You can install them using `pip` :pip install requests python-dotenv
-3. A .env file in the project directory containing your Alibaba/Taobao API credentials:APP_KEY=your_app_key
-APP_SECRET=your_app_secret
-REDIRECT_URI=your_redirect_uri
-SESSION_KEY=your_session_key
-AUTH_CODE=your_auth_code
+2. Required libraries installed. You can install them using `pip`:
+   ```
+   pip install requests python-dotenv
+   ```
+3. A .env file in the project directory containing your Alibaba/Taobao API credentials:
+   ```
+   APP_KEY=your_app_key
+   APP_SECRET=your_app_secret
+   REDIRECT_URI=your_redirect_uri
+   SESSION_KEY=your_session_key
+   AUTH_CODE=your_auth_code
+   ```
 
-## Usage
-1. Clone the repository:git clone https://github.com/ronknight/alibaba-api.git
-cd alibaba-api
-2. Set up your `.env`  file with the required credentials.
+## 🚀 Usage
+1. Clone the repository:
+   ```
+   git clone https://github.com/ronknight/alibaba-api.git
+   cd alibaba-api
+   ```
+2. Set up your `.env` file with the required credentials.
 3. Run the scripts as needed (see the Scripts section for details on each script).
 
-## Features
+## ✨ Features
 1. **Authentication**: Handles the OAuth 2.0 flow for Alibaba/Taobao API.
 2. **Token Management**: Creates and manages access tokens.
 3. **Product Management**: Retrieves, updates, adds, and manages product information.
@@ -51,142 +60,157 @@ cd alibaba-api
 7. **Photobank Management**: Lists, operates, and manages photobank groups.
 8. **Logging**: Comprehensive logging of API requests and responses.
 9. **Error Handling**: Robust error handling and reporting.
-10. **Product Schema**: Management: Adds, retrieves, and renders product schemas.
+10. **Product Schema Management**: Adds, retrieves, and renders product schemas.
 
-### 1. Product List (productlist.py)
+### 📦 1. Product List (productlist.py)
 Retrieves a list of products based on search criteria. Takes command-line arguments for subject, page size, and page number. Makes a POST request to the Alibaba API to retrieve product information. Logs request and response details. Handles and logs errors. Prints product subjects from the response.
 
 ```bash
 python productlist.py <subject> <page_size> <page_number>
 ```
-### 2. Product Get (productget.py)
+
+### 🔍 2. Product Get (productget.py)
 Retrieves detailed information about a specific product.
 
 ```bash
 python productget.py <product_id>
 ```
-### 3. Product Group Get (productgroupget.py)
+
+### 👥 3. Product Group Get (productgroupget.py)
 Retrieves information about a product group.
 
 ```bash
 python productgroupget.py <group_id>
 ```
-### 4. Product ID Decrypt (productiddecrypt.py)
+
+### 🔓 4. Product ID Decrypt (productiddecrypt.py)
 Decrypts a product ID.
 
 ```bash
 python productiddecrypt.py <product_id>
 ```
-### 5. Product Schema (productschema.py)
+
+### 📄 5. Product Schema (productschema.py)
 Retrieves the schema for product information.
 
 ```bash
 python productschema.py
 ```
-### 6. Product Update Field (productupdatefield.py)
+
+### 🔄 6. Product Update Field (productupdatefield.py)
 Updates specific fields of a product.
 
 ```bash
 python productupdatefield.py <product_id>
 ```
-### 7. Product Update Field Copy (productupdatefieldcopy.py)
+
+### 🔄 7. Product Update Field Copy (productupdatefieldcopy.py)
 A variation of the product update field script, focusing on updating the InternalSKU.
 
 ```bash
 python productupdatefieldcopy.py <product_id>
 ```
-### 8. Wholesale Shipping Line Template (wholesaleshippinglinetemplate.py)
+
+### 🚢 8. Wholesale Shipping Line Template (wholesaleshippinglinetemplate.py)
 Retrieves the list of shipping line templates.
 
 ```bash
 python wholesaleshippinglinetemplate.py
 ```
-### 9. Category Attribute Get (categoryattributeget.py)
+
+### 🏷️ 9. Category Attribute Get (categoryattributeget.py)
 Retrieves attributes for a specific category.
 
 ```bash
 python categoryattributeget.py <cat_id>
 ```
-### 10. Category Get (categoryget.py)
+
+### 📁 10. Category Get (categoryget.py)
 Retrieves information about a specific category.
 
 ```bash
 python categoryget.py <cat_id>
 ```
-### 11. Photobank Group List (photobankgrouplist.py)
+
+### 🖼️ 11. Photobank Group List (photobankgrouplist.py)
 Retrieves a list of photobank groups.
 
 ```bash
 python photobankgrouplist.py
 ```
-### 12. Photobank Group Operate (photobankgroupoperate.py)
+
+### 🖼️ 12. Photobank Group Operate (photobankgroupoperate.py)
 Performs operations on photobank groups (add, delete, rename).
 
 ```bash
 python photobankgroupoperate.py <group_name> <operation>
 ```
-### 13. Photobank List (photobanklist.py)
+
+### 🖼️ 13. Photobank List (photobanklist.py)
 Retrieves a list of photos from the photobank.
 
 ```bash
 python photobanklist.py <page_size>
 ```
-### 14. Product Add (productadd.py)
+
+### ➕ 14. Product Add (productadd.py)
 Adds a new product to the catalog.
 
 ```bash
 python productadd.py
 ```
-### 15. Product Batch Update Display (productbatchupdatedisplay.py)
+
+### 🔄 15. Product Batch Update Display (productbatchupdatedisplay.py)
 Updates the display status for multiple products at once.
 
 ```bash
 python productbatchupdatedisplay.py <new_display> <product_id_list>
 ```
-### 16. Product Schema Add Draft (productschemaadddraft.py)
+
+### 📝 16. Product Schema Add Draft (productschemaadddraft.py)
 Adds a draft product schema.
 
 ```bash
 python productschemaadddraft.py <cat_id>
 ```
 
-### 17. Product Schema Get (productschemaget.py)
+### 📄 17. Product Schema Get (productschemaget.py)
 Retrieves a product schema.
 
 ```bash
 python productschemaget.py <product_id>
 ```
 
-### 18. Product Schema Render (productschemarender.py)
+### 🖥️ 18. Product Schema Render (productschemarender.py)
 Renders a product schema.
 
 ```bash
 python productschemarender.py <cat_id> <product_id>
 ```
 
-### 19. Product Schema Render Draft (productschemarenderdraft.py)
+### 🖥️ 19. Product Schema Render Draft (productschemarenderdraft.py)
 Renders a draft product schema.
 
 ```bash
 python productschemarenderdraft.py <cat_id> <draft_product_id>
 ```
 
-### 20. Product Schema Add (productschemaadd.py)
+### ➕ 20. Product Schema Add (productschemaadd.py)
 Adds a product schema.
 
 ```bash
 python productschemaadd.py <cat_id>
 ```
 
-### 21. Product Scheme Update (productschemaupdate.py)
-Updates a products schema.
+### 🔄 21. Product Scheme Update (productschemaupdate.py)
+Updates a product's schema.
 
 ```bash
 python productschemaupdate.py <cat_id> 
 ```
 
-### 22. Product Score Get (productscoreget.py)
-Get a products  score.
+### 📊 22. Product Score Get (productscoreget.py)
+Get a product's score.
 
 ```bash
 python productschemaupdate.py <cat_id> 
@@ -194,8 +218,9 @@ python productschemaupdate.py <cat_id>
 
 Each script includes error handling and logging functionality. Logs are stored in the `api_logs/` directory.
 
+
 <!-- eraser-additional-content -->
-## Diagrams
+## 📊 Diagrams
 <!-- eraser-additional-files -->
 <a href="/README-Alibaba API Client Architecture-1.eraserdiagram" data-element-id="f6_L4NLrps7uMfYCSculN"><img src="/.eraser/Myn74V7c2RK4JrPk9V2j___3Jivg2tjMecMlrHwbIVIBR8f7U03___---diagram----48afec3820aca91f6e05a19aff0cd382-Alibaba-API-Client-Architecture.png" alt="" data-element-id="f6_L4NLrps7uMfYCSculN" /></a>
 <a href="/README-Alibaba API Client Interaction-2.eraserdiagram" data-element-id="Yf6aJmVxktkzt7wHNqWc7"><img src="/.eraser/Myn74V7c2RK4JrPk9V2j___3Jivg2tjMecMlrHwbIVIBR8f7U03___---diagram----aaffa2b1de5395a0d71d31d419f0bcef-Alibaba-API-Client-Interaction.png" alt="" data-element-id="Yf6aJmVxktkzt7wHNqWc7" /></a>
