@@ -22,10 +22,6 @@ def generate_sign(params, app_secret):
     
     # Append app_secret again
     sign_string += app_secret
-    
-    # Calculate MD5 hash
-    sign = hashlib.md5(sign_string.encode('utf-8')).hexdigest().upper()
-    return sign
 
 # Get parameters from environment variables
 app_key = os.getenv('APP_KEY')
@@ -86,7 +82,7 @@ if not app_secret:
     exit(1)
 
 # Generate timestamp
-timestamp = datetime.datetime.utcnow().strftime('%Y-%m-%d+%H%%3A%M%%3A%S')  # Format timestamp according to URL encoding
+timestamp = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%d+%H%%3A%M%%3A%S')  # Format timestamp according to URL encoding
 
 # Construct parameters dictionary
 params = {
